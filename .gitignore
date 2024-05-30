@@ -1,0 +1,4 @@
+e2e_test/Cairo/cairo-vm
+e2e_test/Cairo/corelib
+cpu_air_prover
+cpu_air_verifier

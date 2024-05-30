@@ -18,7 +18,7 @@ You should have docker installed (see https://docs.docker.com/get-docker/).
 Clone the repository:
 
 ```bash
-git clone https://github.com/starkware-libs/stone-prover.git
+git clone https://github.com/delaaxe/stone-prover.git
 ```
 
 Build the docker image:
@@ -39,6 +39,7 @@ docker cp -L ${container_id}:/bin/cpu_air_verifier .
 
 ## Creating and verifying a proof of a Cairo program
 
+### Setup
 
 Navigate to the example test directory (`e2e_test/Cairo`):
 
@@ -52,8 +53,20 @@ Install `cairo-vm/cairo1-run` (see further instructions in the
 ```bash
 git clone https://github.com/lambdaclass/cairo-vm.git
 cd cairo-vm/cairo1-run
+git checkout aecbb3f01dacb6d3f90256c808466c2c37606252
 make deps
+cargo build --release
+cp -R corelib ../..
+cd ../..
 ```
+
+### Run, prove and verify script
+
+```bash
+./prove.sh
+```
+
+### Detailed steps
 
 Compile and run the program to generate the prover input files:
 
@@ -69,7 +82,7 @@ cargo run ../../fibonacci.cairo \
 
 Run the prover:
 ```bash
-cpu_air_prover \
+../../../../cpu_air_prover \
     --out_file=fibonacci_proof.json \
     --private_input_file=fibonacci_private_input.json \
     --public_input_file=fibonacci_public_input.json \
@@ -81,7 +94,7 @@ The proof is now available in the file `fibonacci_proof.json`.
 
 Finally, run the verifier to verify the proof:
 ```bash
-cpu_air_verifier --in_file=fibonacci_proof.json && echo "Successfully verified example proof."
+../../../../cpu_air_verifier --in_file=fibonacci_proof.json && echo "Successfully verified example proof."
 ```
 
 **Note**: The verifier only checks that the proof is consistent with
